@@ -48,7 +48,7 @@ class GitHubViewController: ApiViewController {
                 _ = authorization.client.post(endPoint, parameters: parameters, headers: ["Content-Type":"application/json"], body: data, success: successCallback, failure: failureCallback)
             }
             
-            create1()
+            create2()
         }
         catch { log("Cannot encode the create repo data: \(error)") }
     }
@@ -57,9 +57,9 @@ class GitHubViewController: ApiViewController {
         self.log("Authorizing access to github")
         authorize { authorization, parameters, error in
             guard error == nil else { self.log("Authorization to access github was denied: \(error!)"); return }
-            guard let _ = parameters else { self.log("Authorization to access github was granted but the parameters are nil???)"); return }
+            guard let parameters = parameters else { self.log("Authorization to access github was granted but the parameters are nil???)"); return }
             
-            self.log("Authorization to access github was granted.")
+            self.log("Authorization to access github was granted. Parameters = \(parameters)")
             self.authorization = authorization
             self.parameters = parameters
             self.createButton.isEnabled = true

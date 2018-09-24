@@ -46,7 +46,7 @@
 		E18324312153051700803A35 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 		E18324322153051700803A35 /* ImageViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewCell.xib; sourceTree = "<group>"; };
 		E1C80EFF2152740400257B08 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OAuthSwift.framework; sourceTree = "<group>"; };
-		E1E10738214EA36B00EA081D /* WebApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1E10738214EA36B00EA081D /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E1073B214EA36B00EA081D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1E1073D214EA36B00EA081D /* GeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralViewController.swift; sourceTree = "<group>"; };
 		E1E10740214EA36B00EA081D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -71,7 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				E1C80EFF2152740400257B08 /* OAuthSwift.framework */,
-				E1E1073A214EA36B00EA081D /* WebApi */,
+				E1E1073A214EA36B00EA081D /* Examples */,
 				E1E10739214EA36B00EA081D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,12 +79,12 @@
 		E1E10739214EA36B00EA081D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E1E10738214EA36B00EA081D /* WebApi.app */,
+				E1E10738214EA36B00EA081D /* Examples.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E1E1073A214EA36B00EA081D /* WebApi */ = {
+		E1E1073A214EA36B00EA081D /* Examples */ = {
 			isa = PBXGroup;
 			children = (
 				E1E1073B214EA36B00EA081D /* AppDelegate.swift */,
@@ -101,15 +101,15 @@
 				E18324312153051700803A35 /* ImageViewCell.swift */,
 				E18324322153051700803A35 /* ImageViewCell.xib */,
 			);
-			path = WebApi;
+			path = Examples;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E1E10737214EA36B00EA081D /* WebApi */ = {
+		E1E10737214EA36B00EA081D /* Examples */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E1E1074A214EA36C00EA081D /* Build configuration list for PBXNativeTarget "WebApi" */;
+			buildConfigurationList = E1E1074A214EA36C00EA081D /* Build configuration list for PBXNativeTarget "Examples" */;
 			buildPhases = (
 				E1E10734214EA36B00EA081D /* Sources */,
 				E1E10735214EA36B00EA081D /* Frameworks */,
@@ -120,9 +120,9 @@
 			);
 			dependencies = (
 			);
-			name = WebApi;
+			name = Examples;
 			productName = Simple;
-			productReference = E1E10738214EA36B00EA081D /* WebApi.app */;
+			productReference = E1E10738214EA36B00EA081D /* Examples.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -140,7 +140,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E1E10733214EA36B00EA081D /* Build configuration list for PBXProject "WebApi" */;
+			buildConfigurationList = E1E10733214EA36B00EA081D /* Build configuration list for PBXProject "Examples" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -153,7 +153,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E1E10737214EA36B00EA081D /* WebApi */,
+				E1E10737214EA36B00EA081D /* Examples */,
 			);
 		};
 /* End PBXProject section */
@@ -371,7 +371,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E1E10733214EA36B00EA081D /* Build configuration list for PBXProject "WebApi" */ = {
+		E1E10733214EA36B00EA081D /* Build configuration list for PBXProject "Examples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1E10748214EA36C00EA081D /* Debug */,
@@ -380,7 +380,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E1E1074A214EA36C00EA081D /* Build configuration list for PBXNativeTarget "WebApi" */ = {
+		E1E1074A214EA36C00EA081D /* Build configuration list for PBXNativeTarget "Examples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1E1074B214EA36C00EA081D /* Debug */,
