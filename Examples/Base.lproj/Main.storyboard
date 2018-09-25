@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x4u-7m-d2o">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="x4u-7m-d2o">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +13,7 @@
         <!--GitHub-->
         <scene sceneID="HYr-ii-Z3f">
             <objects>
-                <viewController id="ebZ-HX-zaz" customClass="GitHubViewController" customModule="WebApi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ebZ-HX-zaz" customClass="GitHubViewController" customModule="Examples" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8O1-YM-wSc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -52,8 +52,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgA-Oh-SM1">
-                                <rect key="frame" x="243.5" y="36" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgA-Oh-SM1">
+                                <rect key="frame" x="245.5" y="36" width="46" height="30"/>
                                 <state key="normal" title="Create">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -65,11 +65,13 @@
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="fgA-Oh-SM1" firstAttribute="centerY" secondItem="bez-gv-pVG" secondAttribute="centerY" id="58D-VM-6pz"/>
-                            <constraint firstItem="bez-gv-pVG" firstAttribute="leading" secondItem="Xnf-VU-g8y" secondAttribute="trailing" constant="8" id="B8X-4J-f6w"/>
+                            <constraint firstItem="bez-gv-pVG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Xnf-VU-g8y" secondAttribute="trailing" constant="8" symbolic="YES" id="B8X-4J-f6w"/>
                             <constraint firstItem="Xnf-VU-g8y" firstAttribute="centerY" secondItem="bez-gv-pVG" secondAttribute="centerY" id="BeF-Kn-VuV"/>
                             <constraint firstItem="uUd-mW-97s" firstAttribute="trailing" secondItem="ymn-mH-1Kg" secondAttribute="trailing" id="Bk0-bA-cHr"/>
-                            <constraint firstItem="fgA-Oh-SM1" firstAttribute="leading" secondItem="bez-gv-pVG" secondAttribute="trailing" constant="8" id="Bve-wl-bWs"/>
+                            <constraint firstItem="fgA-Oh-SM1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bez-gv-pVG" secondAttribute="trailing" constant="8" symbolic="YES" id="Bve-wl-bWs"/>
                             <constraint firstItem="bez-gv-pVG" firstAttribute="centerX" secondItem="8O1-YM-wSc" secondAttribute="centerX" id="HPW-wY-ajW"/>
+                            <constraint firstItem="Xnf-VU-g8y" firstAttribute="leading" secondItem="ymn-mH-1Kg" secondAttribute="leading" constant="84.5" id="Jy9-IK-QNj"/>
+                            <constraint firstItem="ymn-mH-1Kg" firstAttribute="trailing" secondItem="fgA-Oh-SM1" secondAttribute="trailing" constant="83.5" id="NFV-xl-EFh"/>
                             <constraint firstItem="uUd-mW-97s" firstAttribute="bottom" secondItem="HE3-XX-KVV" secondAttribute="top" id="cNX-P5-mVx"/>
                             <constraint firstItem="HE3-XX-KVV" firstAttribute="bottom" secondItem="ymn-mH-1Kg" secondAttribute="bottom" id="cpZ-4g-QVH"/>
                             <constraint firstItem="uUd-mW-97s" firstAttribute="leading" secondItem="ymn-mH-1Kg" secondAttribute="leading" id="fbC-TA-a0Q"/>
@@ -93,7 +95,7 @@
         <!--Google-->
         <scene sceneID="3ri-Cq-dqu">
             <objects>
-                <viewController id="048-i7-ovK" customClass="GoogleViewController" customModule="WebApi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="048-i7-ovK" customClass="GoogleViewController" customModule="Examples" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Jbz-J5-lyc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -142,7 +144,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BZj-lH-TGu" customClass="ImageViewCell" customModule="WebApi" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageViewCell" id="BZj-lH-TGu" customClass="ImageViewCell" customModule="Examples" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -207,7 +209,7 @@
         <!--General-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="GeneralViewController" customModule="WebApi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="GeneralViewController" customModule="Examples" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -218,7 +220,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="0Il-My-1Dg">
                                 <rect key="frame" x="0.0" y="50" width="375" height="50"/>
@@ -308,7 +309,7 @@
         <!--Post Data View Controller-->
         <scene sceneID="tSg-uP-H5O">
             <objects>
-                <viewController id="mUa-B3-vnf" customClass="PostDataViewController" customModule="WebApi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mUa-B3-vnf" customClass="PostDataViewController" customModule="Examples" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="00f-ly-h3w">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

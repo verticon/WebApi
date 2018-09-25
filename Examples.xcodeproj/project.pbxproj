@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E11201F1215AA0EA00D1A734 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E11201F0215AA0EA00D1A734 /* OAuthSwift.framework */; };
+		E11201F2215AA0EA00D1A734 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E11201F0215AA0EA00D1A734 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E14693DB2150356700BB3811 /* GitHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DA2150356700BB3811 /* GitHubViewController.swift */; };
 		E14693DD2151558A00BB3811 /* HttpStatusCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */; };
 		E14693DF21517D5800BB3811 /* ApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DE21517D5800BB3811 /* ApiViewController.swift */; };
@@ -14,8 +16,6 @@
 		E1828A36214F23F900E14888 /* PostDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1828A35214F23F900E14888 /* PostDataViewController.swift */; };
 		E18324332153051700803A35 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18324312153051700803A35 /* ImageViewCell.swift */; };
 		E18324342153051700803A35 /* ImageViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E18324322153051700803A35 /* ImageViewCell.xib */; };
-		E1C80F002152740400257B08 /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C80EFF2152740400257B08 /* OAuthSwift.framework */; };
-		E1C80F012152740400257B08 /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E1C80EFF2152740400257B08 /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E1E1073C214EA36B00EA081D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E1073B214EA36B00EA081D /* AppDelegate.swift */; };
 		E1E1073E214EA36B00EA081D /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E1073D214EA36B00EA081D /* GeneralViewController.swift */; };
 		E1E10741214EA36B00EA081D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1E1073F214EA36B00EA081D /* Main.storyboard */; };
@@ -30,7 +30,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E1C80F012152740400257B08 /* OAuthSwift.framework in Embed Frameworks */,
+				E11201F2215AA0EA00D1A734 /* OAuthSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E11201F0215AA0EA00D1A734 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OAuthSwift.framework; sourceTree = "<group>"; };
 		E14693DA2150356700BB3811 /* GitHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubViewController.swift; sourceTree = "<group>"; };
 		E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpStatusCodes.swift; sourceTree = "<group>"; };
 		E14693DE21517D5800BB3811 /* ApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiViewController.swift; sourceTree = "<group>"; };
@@ -45,7 +46,6 @@
 		E1828A35214F23F900E14888 /* PostDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataViewController.swift; sourceTree = "<group>"; };
 		E18324312153051700803A35 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 		E18324322153051700803A35 /* ImageViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewCell.xib; sourceTree = "<group>"; };
-		E1C80EFF2152740400257B08 /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OAuthSwift.framework; sourceTree = "<group>"; };
 		E1E10738214EA36B00EA081D /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E1073B214EA36B00EA081D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E1E1073D214EA36B00EA081D /* GeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralViewController.swift; sourceTree = "<group>"; };
@@ -60,19 +60,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1C80F002152740400257B08 /* OAuthSwift.framework in Frameworks */,
+				E11201F1215AA0EA00D1A734 /* OAuthSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E11201EA215A8B6B00D1A734 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E1E1072F214EA36B00EA081D = {
 			isa = PBXGroup;
 			children = (
-				E1C80EFF2152740400257B08 /* OAuthSwift.framework */,
+				E11201F0215AA0EA00D1A734 /* OAuthSwift.framework */,
 				E1E1073A214EA36B00EA081D /* Examples */,
 				E1E10739214EA36B00EA081D /* Products */,
+				E11201EA215A8B6B00D1A734 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +145,7 @@
 				TargetAttributes = {
 					E1E10737214EA36B00EA081D = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -341,7 +350,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rvaessen.WebApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -363,7 +372,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rvaessen.WebApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

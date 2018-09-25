@@ -13,7 +13,6 @@ class GitHubViewController: ApiViewController {
 
     @IBOutlet weak var createButton: UIButton!
 
-    private let endPoint = "https://api.github.com/user/repos"
     private let personalToken = "abdab236972b6515fc36015fe0e1bfbe11e2c1ad"
     private var authorization: OAuth2Swift?
     private var parameters: [String : Any]?
@@ -27,30 +26,36 @@ class GitHubViewController: ApiViewController {
     @IBAction func createRepo(_ sender: UIButton) {
         guard let name = repoName.text, name.count > 0 else { log("Please provide a repo name"); return }
         
-        struct CreateRepoData : Codable {
-            let name: String
-            let description: String
-        }
-        
-        do {
-            let createRepoData = CreateRepoData(name: name, description: "A test repository for exercising the github web api")
-            let data = try JSONEncoder().encode(createRepoData)
+        let endPoint = "https://api.github.com/user/repos"
+        let description = "A test repository for exercising the github web api"
 
-            func create1() {
+        func create1() {
+            struct CreateRepoData : Codable {
+                let name: String
+                let description: String
+            }
+            let createRepoData = CreateRepoData(name: name, description: description)
+
+            do {
+                let data = try JSONEncoder().encode(createRepoData)
                 post(jsonData: data, to: endPoint, with: personalToken)
             }
-            
-            func create2() { // Does not work yet
-                guard let authorization = authorization, let parameters = parameters else { return }
-                
-                let successCallback = { (response: OAuthSwiftResponse) in self.log("The \(name) repo was successfully created") }
-                let failureCallback = { (error: Error) in self.log("The \(name) repo could not be created: \(error.localizedDescription)") }
-                _ = authorization.client.post(endPoint, parameters: parameters, headers: ["Content-Type":"application/json"], body: data, success: successCallback, failure: failureCallback)
-            }
-            
-            create2()
+            catch { log("Cannot encode the create repo data: \(error)") }
         }
-        catch { log("Cannot encode the create repo data: \(error)") }
+        
+        func create2() {
+            guard let authorization = authorization else { return }
+            
+            let successCallback = {
+                (response: OAuthSwiftResponse) in self.log("The \(name) repo was successfully created")
+            }
+            let failureCallback = {
+                (error: Error) in self.log("The \(name) repo could not be created: \(error.localizedDescription)")
+            }
+            _ = authorization.client.post(endPoint, parameters: ["name" : name, "desription" : description], headers: ["content-type":"application/json"], success: successCallback, failure: failureCallback)
+        }
+        
+        create2()
     }
 
     private func authorize() {

@@ -17,7 +17,7 @@ class GeneralViewController: ApiViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         endPointTextField.attributedPlaceholder =
-            NSAttributedString(string: "Enter an endpoint url", attributes: [NSAttributedStringKey.foregroundColor : UIColor.white])
+            NSAttributedString(string: "Enter an endpoint url", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
     }
 
     @IBAction func get(_ sender: UIButton) {
