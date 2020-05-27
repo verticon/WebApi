@@ -16,11 +16,20 @@ class GeneralViewController: ApiViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         endPointTextField.attributedPlaceholder =
             NSAttributedString(string: "Enter an endpoint url", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(endEditting))
+        view.addGestureRecognizer(tapRecognizer)
+    }
+
+    @objc private func endEditting(_ recognizer: UITapGestureRecognizer) {
+        endPointTextField.endEditing(true)
     }
 
     @IBAction func get(_ sender: UIButton) {
+        endPointTextField.endEditing(true)
         get(endPoint: endPoint)
     }
 
@@ -30,6 +39,7 @@ class GeneralViewController: ApiViewController {
     }
 
     @IBAction func _delete(_ sender: UIButton) {
+        endPointTextField.endEditing(true)
         delete(endPoint: endPoint)
     }
 }

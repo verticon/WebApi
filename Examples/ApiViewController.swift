@@ -11,7 +11,9 @@ import UIKit
 class ApiViewController: UIViewController {
     
     @IBOutlet weak var console: UITextView!
+
     @IBAction func clear(_ sender: UIButton) {  console?.text = "" }
+
     func log(_ text: String, _ newline: Bool = true) {
         guard let console = console else { print(text); return }
         DispatchQueue.main.async { console.text = (console.text ?? "") + text + (newline ? "\n" : "") }

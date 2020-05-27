@@ -21,6 +21,9 @@ class GitHubViewController: ApiViewController {
 
     override func viewDidLoad() {
         authorize()
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(endEditting))
+        view.addGestureRecognizer(tapRecognizer)
     }
 
     @IBAction func createRepo(_ sender: UIButton) {
@@ -46,36 +49,32 @@ class GitHubViewController: ApiViewController {
         func create2() {
             guard let authorization = authorization else { return }
             
-            let successCallback = {
-                (response: OAuthSwiftResponse) in self.log("The \(name) repo was successfully created")
+            _ = authorization.client.post(endPoint, parameters: ["name" : name, "desription" : description], headers: ["content-type":"application/json"]) { result in
+                switch result {
+
+                case .success(let response):
+                    self.log("The \(name) repo was successfully created: \(response)")
+
+                case .failure(let error):
+                    self.log("The \(name) repo could not be created: \(error.localizedDescription)")
+                }
             }
-            let failureCallback = {
-                (error: Error) in self.log("The \(name) repo could not be created: \(error.localizedDescription)")
-            }
-            _ = authorization.client.post(endPoint, parameters: ["name" : name, "desription" : description], headers: ["content-type":"application/json"], success: successCallback, failure: failureCallback)
         }
         
         create2()
+
+        repoName.endEditing(true)
+    }
+
+    @objc private func endEditting(_ recognizer: UITapGestureRecognizer) {
+        repoName.endEditing(true)
     }
 
     private func authorize() {
         self.log("Authorizing access to github")
-        authorize { authorization, parameters, error in
-            guard error == nil else { self.log("Authorization to access github was denied: \(error!)"); return }
-            guard let parameters = parameters else { self.log("Authorization to access github was granted but the parameters are nil???)"); return }
-            
-            self.log("Authorization to access github was granted. Parameters = \(parameters)")
-            self.authorization = authorization
-            self.parameters = parameters
-            self.createButton.isEnabled = true
-       }
-    }
-
-    private func authorize(completion: @escaping (OAuth2Swift, [String : Any]?, Error?) -> Void) {
 
         let authorization = OAuth2Swift(consumerKey: "7a68e2f2670f13dae4c4", consumerSecret: "822e869d88e2c801ae59bd04e4262cdfe453414e",
-                                        authorizeUrl:   "http://github.com/login/oauth/authorize",
-                                        accessTokenUrl: "https://github.com/login/oauth/access_token", responseType:   "code")
+            authorizeUrl: "http://github.com/login/oauth/authorize", accessTokenUrl: "https://github.com/login/oauth/access_token", responseType: "code")
 
         authorization.allowMissingStateCheck = true
         authorization.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: authorization)
@@ -83,9 +82,18 @@ class GitHubViewController: ApiViewController {
         let endPoint = "github://com.rvaessen.webapi:/oauth2Callback"
         guard let callbackURL = URL(string: endPoint) else { log("Could not create URL from \(endPoint)"); return }
         
-        authorization.authorize(withCallbackURL: callbackURL, scope: "repo", state: "",
-                                success: { credential, response, parameters in completion(authorization, parameters, nil) },
-                                failure: { error in completion(authorization, nil, error) }
-        )
+        authorization.authorize(withCallbackURL: callbackURL, scope: "repo", state: "") { result in
+            switch result {
+
+            case .success(let (credential, response, parameters)):
+                self.log("Authorization to access GitHub was granted.\n\tCredential = \(credential)\n\tresponse = \(String(describing: response))\n\tParameters = \(parameters)")
+                self.authorization = authorization
+                self.parameters = parameters
+                self.createButton.isEnabled = true
+
+            case .failure(let error):
+                self.log("Authorization to access GitHub was denied: \(error)");
+            }
+        }
     }
 }

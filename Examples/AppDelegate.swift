@@ -41,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        print("Redirect URL received: \(url)")
+        // if url.host == "oauth-callback" { OAuthSwift.handle(url: url) }
         OAuthSwift.handle(url: url)
         return true
     }

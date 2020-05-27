@@ -27,36 +27,14 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
         let imageViewCellNib = UINib(nibName: "ImageViewCell", bundle: nil)
         imageCollection.register(imageViewCellNib, forCellWithReuseIdentifier: imageViewCellReuseIdentifier)
 
-        self.log("Authorizing access to google drive")
-        authorize { authorization, parameters, error in
-            guard error == nil else {
-                self.log("Authorization to access the google drive was denied: \(error!)")
-                return
-            }
-
-            guard let parameters = parameters else {
-                self.log("The authorization parameters are nil???)")
-                return
-            }
-            
-            self.log("Authorization to access the google drive was granted.")
-
-            self.authorization = authorization
-            self.parameters = parameters
-            self.uploadButton.isEnabled = true
-            
-            self.downloadImages { image in
-                DispatchQueue.main.async {
-                    self.images.append(image)
-                    self.imageCollection.reloadData()
-                }
-            }
-        }
+        authorize()
     }
 
-    private func authorize(completion: @escaping (OAuth2Swift, [String : Any]?, Error?) -> Void) {
+    private func authorize() {
+        log("Authorizing access to google drive")
 
         let authorization = OAuth2Swift(
+            // 555550332418-36mf5bhk6d2j654toraovg2ef9h5simv.apps.googleusercontent.com
             consumerKey:    "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
             consumerSecret: "", // No secret required
             authorizeUrl:   "https://accounts.google.com/o/oauth2/auth",
@@ -65,13 +43,32 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
         authorization.allowMissingStateCheck = true
         authorization.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: authorization)
         
-        let endPoint = "com.rvaessen.WebApi:/oauth2Callback"
+        // Google API setup for iOS wants the app's bundle ID.
+        // It then expects the redirect URL's scheme to match it. WTF?
+        let endPoint = "com.rvaessen.WebApi:/oauth2redirect/google"
         guard let callbackURL = URL(string: endPoint) else { log("Could not create URL from \(endPoint)"); return }
         
-        authorization.authorize(withCallbackURL: callbackURL, scope: "https://www.googleapis.com/auth/drive", state: "",
-                                success: { credential, response, parameters in completion(authorization, parameters, nil) },
-                                failure: { error in completion(authorization, nil, error) }
-        )
+        authorization.authorize(withCallbackURL: callbackURL, scope: "https://www.googleapis.com/auth/drive", state: "") { result in
+            switch result {
+
+            case .success(let (credential, response, parameters)):
+                self.log("Authorization to access the google drive was granted.\n\tCredential = \(credential)\n\tresponse = \(String(describing: response))\n\tParameters = \(parameters)")
+
+                self.authorization = authorization
+                self.parameters = parameters
+                self.uploadButton.isEnabled = true
+
+                self.downloadImages { image in
+                    DispatchQueue.main.async {
+                        self.images.append(image)
+                        self.imageCollection.reloadData()
+                    }
+                }
+
+            case .failure(let error):
+                self.log("Authorization to access the google drive was denied: \(error)")
+            }
+        }
     }
 
     // ******************************************************************************************************
@@ -87,8 +84,7 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
         picker.dismiss(animated: true, completion: nil)
 
@@ -105,9 +101,14 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     private func upload(image: Data, completion: @escaping (Error?) -> ()) {
         guard let authorization = authorization, let parameters = parameters else { return }
 
-        authorization.client.postImage("https://www.googleapis.com/upload/drive/v2/files", parameters: parameters, image: image,
-            success: { response in completion(nil) }, failure: { error in completion(error)
-        })
+        authorization.client.postImage("https://www.googleapis.com/upload/drive/v2/files", parameters: parameters, image: image) { result in
+            switch result {
+
+            case .success: completion(nil)
+
+            case .failure(let error): completion(error)
+            }
+        }
     }
 
     // ******************************************************************************************************
@@ -115,7 +116,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
     private func downloadImages(handler: @escaping (UIImage) -> ()) {
         guard let authorization = authorization, let parameters = parameters else { return }
 
-        let getFilesSuccessCallback = { (response: OAuthSwiftResponse) in
+        func downloadFiles(response: OAuthSwiftResponse) {
             do {
 
                 struct FileList : Codable {
@@ -131,27 +132,31 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
 
                 for file in fileList.items {
                     guard file.mimeType.starts(with: "image") else { continue }
-                    
-                    let getThumbnailSuccessCallback = { (response: OAuthSwiftResponse) in
-                        if let image = UIImage(data: response.data) { handler(image) }
-                        else { self.log("A UIImage could not be created from the thumbnail response data") }
+
+                    _ = authorization.client.get(file.thumbnailLink, parameters: parameters) { result in
+                        switch result {
+
+                        case .success(let response):
+                            if let image = UIImage(data: response.data) { handler(image) }
+                            else { self.log("A UIImage could not be created from the thumbnail response data") }
+
+                        case .failure(let error):
+                            self.log("The thumbnail could not be downloaded: \(error.localizedDescription)")
+                        }
                     }
-                    
-                    let getThumbnailFailureCallback = { (error: Error) in
-                        self.log("The thumbnail could not be downloaded: \(error.localizedDescription)")
-                    }
-                    
-                    _ = authorization.client.get(file.thumbnailLink, parameters: parameters, success: getThumbnailSuccessCallback, failure: getThumbnailFailureCallback)
                 }
             }
             catch { self.log("Could not decode response data to obtain file list info: \(error)") }
         }
 
-        let getFilesFailureCallback = { (error: Error) in
-            self.log("The files could not be downloaded: \(error.localizedDescription)")
-        }
+        _ = authorization.client.get("https://www.googleapis.com/drive/v2/files", parameters: parameters) { result in
+            switch result {
 
-        _ = authorization.client.get("https://www.googleapis.com/drive/v2/files", parameters: parameters, success: getFilesSuccessCallback, failure: getFilesFailureCallback)
+            case .success(let response): downloadFiles(response: response)
+
+            case .failure(let error): self.log("The files could not be downloaded: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
