@@ -11,6 +11,7 @@
 		E14693DD2151558A00BB3811 /* HttpStatusCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */; };
 		E14693DF21517D5800BB3811 /* ApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DE21517D5800BB3811 /* ApiViewController.swift */; };
 		E14693E121518CDB00BB3811 /* GoogleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693E021518CDB00BB3811 /* GoogleViewController.swift */; };
+		E181FAD4247EEFA100DEF228 /* OAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181FAD3247EEFA100DEF228 /* OAuthViewController.swift */; };
 		E1828A36214F23F900E14888 /* PostDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1828A35214F23F900E14888 /* PostDataViewController.swift */; };
 		E18324332153051700803A35 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18324312153051700803A35 /* ImageViewCell.swift */; };
 		E18324342153051700803A35 /* ImageViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E18324322153051700803A35 /* ImageViewCell.xib */; };
@@ -42,6 +43,7 @@
 		E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpStatusCodes.swift; sourceTree = "<group>"; };
 		E14693DE21517D5800BB3811 /* ApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiViewController.swift; sourceTree = "<group>"; };
 		E14693E021518CDB00BB3811 /* GoogleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleViewController.swift; sourceTree = "<group>"; };
+		E181FAD3247EEFA100DEF228 /* OAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthViewController.swift; sourceTree = "<group>"; };
 		E1828A35214F23F900E14888 /* PostDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataViewController.swift; sourceTree = "<group>"; };
 		E18324312153051700803A35 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 		E18324322153051700803A35 /* ImageViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewCell.xib; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				E1E10747214EA36C00EA081D /* Info.plist */,
 				E1E10744214EA36C00EA081D /* LaunchScreen.storyboard */,
 				E1E1073F214EA36B00EA081D /* Main.storyboard */,
+				E181FAD3247EEFA100DEF228 /* OAuthViewController.swift */,
 				E1828A35214F23F900E14888 /* PostDataViewController.swift */,
 			);
 			path = Examples;
@@ -145,7 +148,7 @@
 				TargetAttributes = {
 					E1E10737214EA36B00EA081D = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1150;
 					};
 				};
 			};
@@ -187,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1E1073E214EA36B00EA081D /* GeneralViewController.swift in Sources */,
+				E181FAD4247EEFA100DEF228 /* OAuthViewController.swift in Sources */,
 				E14693DF21517D5800BB3811 /* ApiViewController.swift in Sources */,
 				E18324332153051700803A35 /* ImageViewCell.swift in Sources */,
 				E1E1073C214EA36B00EA081D /* AppDelegate.swift in Sources */,
@@ -352,7 +356,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rvaessen.WebApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -374,7 +378,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rvaessen.WebApi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -9,12 +9,9 @@
 import UIKit
 import OAuthSwift
 
-class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var uploadButton: UIButton!
-
-    private var authorization: OAuth2Swift?
-    private var parameters: [String : Any]?
 
     private var images = [UIImage]()
     private let imageViewCellReuseIdentifier = "ImageViewCell"
@@ -28,49 +25,28 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
         imageCollection.register(imageViewCellNib, forCellWithReuseIdentifier: imageViewCellReuseIdentifier)
 
         authorize()
-    }
 
-    private func authorize() {
-        log("Authorizing access to google drive")
-
-        let authorization = OAuth2Swift(
-            // 555550332418-36mf5bhk6d2j654toraovg2ef9h5simv.apps.googleusercontent.com
-            consumerKey:    "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
-            consumerSecret: "", // No secret required
-            authorizeUrl:   "https://accounts.google.com/o/oauth2/auth",
-            accessTokenUrl: "https://accounts.google.com/o/oauth2/token",
-            responseType:   "code")
-        authorization.allowMissingStateCheck = true
-        authorization.authorizeURLHandler = SafariURLHandler(viewController: self, oauthSwift: authorization)
-        
-        // Google API setup for iOS wants the app's bundle ID.
-        // It then expects the redirect URL's scheme to match it. WTF?
-        let endPoint = "com.rvaessen.WebApi:/oauth2redirect/google"
-        guard let callbackURL = URL(string: endPoint) else { log("Could not create URL from \(endPoint)"); return }
-        
-        authorization.authorize(withCallbackURL: callbackURL, scope: "https://www.googleapis.com/auth/drive", state: "") { result in
-            switch result {
-
-            case .success(let (credential, response, parameters)):
-                self.log("Authorization to access the google drive was granted.\n\tCredential = \(credential)\n\tresponse = \(String(describing: response))\n\tParameters = \(parameters)")
-
-                self.authorization = authorization
-                self.parameters = parameters
-                self.uploadButton.isEnabled = true
-
-                self.downloadImages { image in
-                    DispatchQueue.main.async {
-                        self.images.append(image)
-                        self.imageCollection.reloadData()
-                    }
-                }
-
-            case .failure(let error):
-                self.log("Authorization to access the google drive was denied: \(error)")
+        downloadImages { image in
+            DispatchQueue.main.async {
+                self.images.append(image)
+                self.imageCollection.reloadData()
             }
         }
     }
 
+    private func authorize() {
+
+        let parameters = AuthorizationParameters(consumerKey: "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
+            consumerSecret: "", authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
+            accessTokenUrl: "https://accounts.google.com/o/oauth2/token", redirectUri: "com.rvaessen.WebApi:/oauth2redirect/google",
+            responseType: "code", scope: "https://www.googleapis.com/auth/drive", state: "")
+
+        authorize(serviceName: "GoogleDrive", parameters: parameters, tokenKey: "GoogleDriveTokenKey", tokenSecretKey: "GoogleDriveTokenSecretKey") { (status: Bool) in }
+    }
+
+
+    // ******************************************************************************************************
+    // Upload
     // ******************************************************************************************************
 
     @IBAction func upload(_ sender: UIButton) {
@@ -99,9 +75,9 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
     }
 
     private func upload(image: Data, completion: @escaping (Error?) -> ()) {
-        guard let authorization = authorization, let parameters = parameters else { return }
+        guard let authorization = authorization else { return }
 
-        authorization.client.postImage("https://www.googleapis.com/upload/drive/v2/files", parameters: parameters, image: image) { result in
+        authorization.client.postImage("https://www.googleapis.com/upload/drive/v2/files", parameters: Dictionary<String, Any>(), image: image) { result in
             switch result {
 
             case .success: completion(nil)
@@ -112,9 +88,11 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
     }
 
     // ******************************************************************************************************
+    // Download
+    // ******************************************************************************************************
 
     private func downloadImages(handler: @escaping (UIImage) -> ()) {
-        guard let authorization = authorization, let parameters = parameters else { return }
+        guard let authorization = authorization else { return }
 
         func downloadFiles(response: OAuthSwiftResponse) {
             do {
@@ -129,11 +107,10 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
                 }
 
                 let fileList = try JSONDecoder().decode(FileList.self, from: response.data)
-
-                for file in fileList.items {
-                    guard file.mimeType.starts(with: "image") else { continue }
-
-                    _ = authorization.client.get(file.thumbnailLink, parameters: parameters) { result in
+                let imageList = fileList.items.filter() { file in file.mimeType.starts(with: "image") }
+                log("GoogleDrive: Downloading \(imageList.count) image thumbnails")
+                for image in imageList {
+                    _ = authorization.client.get(image.thumbnailLink) { result in
                         switch result {
 
                         case .success(let response):
@@ -149,7 +126,8 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
             catch { self.log("Could not decode response data to obtain file list info: \(error)") }
         }
 
-        _ = authorization.client.get("https://www.googleapis.com/drive/v2/files", parameters: parameters) { result in
+        log("GoogleDrive: Obtaing list of files")
+        _ = authorization.client.get("https://www.googleapis.com/drive/v2/files") { result in
             switch result {
 
             case .success(let response): downloadFiles(response: response)
@@ -159,6 +137,8 @@ class GoogleViewController: ApiViewController, UIImagePickerControllerDelegate, 
         }
     }
 }
+
+// ******************************************************************************************************
 
 extension GoogleViewController : UICollectionViewDataSource {
     
