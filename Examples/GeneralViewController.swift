@@ -19,13 +19,6 @@ class GeneralViewController: ApiViewController {
 
         endPointTextField.attributedPlaceholder =
             NSAttributedString(string: "Enter an endpoint url", attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(endEditting))
-        view.addGestureRecognizer(tapRecognizer)
-    }
-
-    @objc private func endEditting(_ recognizer: UITapGestureRecognizer) {
-        endPointTextField.endEditing(true)
     }
 
     @IBAction func get(_ sender: UIButton) {

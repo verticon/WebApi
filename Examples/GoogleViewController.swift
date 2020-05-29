@@ -5,6 +5,7 @@
 //  Created by Robert Vaessen on 9/18/18.
 //  Copyright © 2018 Robert Vaessen. All rights reserved.
 //
+// https://drive.google.com/drive/my-drive
 
 import UIKit
 import OAuthSwift
@@ -16,7 +17,6 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
     private var images = [UIImage]()
     private let imageViewCellReuseIdentifier = "ImageViewCell"
     @IBOutlet weak var imageCollection: UICollectionView!
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,6 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
 
         authorize(serviceName: "GoogleDrive", parameters: parameters, tokenKey: "GoogleDriveTokenKey", tokenSecretKey: "GoogleDriveTokenSecretKey") { (status: Bool) in }
     }
-
 
     // ******************************************************************************************************
     // Upload
@@ -137,8 +136,6 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
         }
     }
 }
-
-// ******************************************************************************************************
 
 extension GoogleViewController : UICollectionViewDataSource {
     

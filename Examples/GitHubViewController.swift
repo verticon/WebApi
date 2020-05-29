@@ -11,9 +11,10 @@ import OAuthSwift
 
 class GitHubViewController: OAuthViewController {
 
+    @IBOutlet weak var repoName: UITextField!
     @IBOutlet weak var createButton: UIButton!
 
-    @IBOutlet weak var repoName: UITextField!
+    private let endPoint = "https://api.github.com/user/repos"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +27,6 @@ class GitHubViewController: OAuthViewController {
 
     @IBAction func createRepo(_ sender: UIButton) {
         guard let name = repoName.text, name.count > 0 else { log("Please provide a repo name"); return }
-        
-        let endPoint = "https://api.github.com/user/repos"
         let description = "A test repository for exercising the github web api"
 
         if let authorization = authorization {
@@ -81,6 +80,35 @@ class GitHubViewController: OAuthViewController {
             accessTokenUrl: "https://github.com/login/oauth/access_token", redirectUri: "github://com.rvaessen.webapi:/oauth2Callback",
             responseType: "code", scope: "repo", state: "")
 
-        authorize(serviceName: "GitHub", parameters: parameters, tokenKey: "GitHubTokenKey", tokenSecretKey: "GitHubTokenSecretKey") { (status: Bool) in }
+        authorize(serviceName: "GitHub", parameters: parameters, tokenKey: "GitHubTokenKey", tokenSecretKey: "GitHubTokenSecretKey") { (succeeded: Bool) in
+            if succeeded { self.queryRepos() }
+        }
+    }
+
+    typealias JSONArray = Array<AnyObject>
+    typealias JSONDictionary = Dictionary<String, AnyObject>
+
+    private func queryRepos() {
+        if let authorization = authorization {
+            log("Querying GitHub repos using OAuth2")
+
+            _ = authorization.client.get(endPoint) { result in
+                switch result {
+                case .success(let response):
+                    self.log("The query succeeded")
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: response.data, options: [])
+                        guard let array = json as? JSONArray else { self.log("Json is not array"); return }
+                        let repoList = array.map { $0 as! JSONDictionary }
+                        self.log("There are \(repoList.count) repositories:")
+                        for repo in repoList { self.log("\n\t\(repo["name"] ?? "<no name>" as AnyObject) - \(repo["description"] ?? "<no description>" as AnyObject)") }
+                    }
+                    catch { self.log("Cannot convert json data to object: \(error)")}
+
+                case .failure(let error):
+                       self.log("The query failed: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
