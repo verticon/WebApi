@@ -14,6 +14,8 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
 
     @IBOutlet weak var uploadButton: UIButton!
 
+    private let fileListUrl = "https://www.googleapis.com/drive/v2/files"
+
     private var images = [UIImage]()
     private let imageViewCellReuseIdentifier = "ImageViewCell"
     @IBOutlet weak var imageCollection: UICollectionView!
@@ -24,24 +26,28 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
         let imageViewCellNib = UINib(nibName: "ImageViewCell", bundle: nil)
         imageCollection.register(imageViewCellNib, forCellWithReuseIdentifier: imageViewCellReuseIdentifier)
 
-        authorize()
+        authorize() { status in
+            guard status else { return }
 
-        downloadImages { image in
-            DispatchQueue.main.async {
-                self.images.append(image)
-                self.imageCollection.reloadData()
+            self.downloadImages { image in
+                DispatchQueue.main.async {
+                    self.images.append(image)
+                    self.imageCollection.reloadData()
+                }
             }
         }
     }
 
-    private func authorize() {
+    private func authorize(callback: @escaping (Bool) -> ()) {
 
-        let parameters = AuthorizationParameters(consumerKey: "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
+        let parameters = OAuth2AuthorizationParameters(consumerKey: "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
             consumerSecret: "", authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
             accessTokenUrl: "https://accounts.google.com/o/oauth2/token", redirectUri: "com.rvaessen.WebApi:/oauth2redirect/google",
             responseType: "code", scope: "https://www.googleapis.com/auth/drive", state: "")
 
-        authorize(serviceName: "GoogleDrive", parameters: parameters, tokenKey: "GoogleDriveTokenKey", tokenSecretKey: "GoogleDriveTokenSecretKey") { (status: Bool) in }
+        authorize(serviceName: "GoogleDrive", parameters: parameters, authorizationTestUrl: fileListUrl) { (status: Bool) in
+            callback(status)
+        }
     }
 
     // ******************************************************************************************************
@@ -93,7 +99,7 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
     private func downloadImages(handler: @escaping (UIImage) -> ()) {
         guard let authorization = authorization else { return }
 
-        func downloadFiles(response: OAuthSwiftResponse) {
+        func downloadThumbnails(response: OAuthSwiftResponse) {
             do {
 
                 struct FileList : Codable {
@@ -117,7 +123,7 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
                             else { self.log("A UIImage could not be created from the thumbnail response data") }
 
                         case .failure(let error):
-                            self.log("The thumbnail could not be downloaded: \(error.localizedDescription)")
+                            self.log("The thumbnail could not be downloaded:  \(error.name)")
                         }
                     }
                 }
@@ -125,13 +131,13 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
             catch { self.log("Could not decode response data to obtain file list info: \(error)") }
         }
 
-        log("GoogleDrive: Obtaing list of files")
-        _ = authorization.client.get("https://www.googleapis.com/drive/v2/files") { result in
+        log("GoogleDrive: Obtaining list of files")
+        _ = authorization.client.get(fileListUrl) { result in
             switch result {
 
-            case .success(let response): downloadFiles(response: response)
+            case .success(let response): downloadThumbnails(response: response)
 
-            case .failure(let error): self.log("The files could not be downloaded: \(error.localizedDescription)")
+            case .failure(let error): self.log("GoogleDrive: The file list could not be obtained: \(error.name)")
             }
         }
     }

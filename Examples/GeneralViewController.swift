@@ -10,7 +10,11 @@ import UIKit
 
 class GeneralViewController: ApiViewController {
     
-    // Ex. https://jsonplaceholder.typicode.com/todos
+    // Examples
+    //  Get
+    //      https://jsonplaceholder.typicode.com/users
+    //      https://jsonplaceholder.typicode.com/users/1
+
     @IBOutlet weak var endPointTextField: UITextField!
     private var endPoint: String { return endPointTextField.text ?? "" }
 

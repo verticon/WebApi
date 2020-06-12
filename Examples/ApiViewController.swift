@@ -28,6 +28,8 @@ class ApiViewController: UIViewController {
     }
     
     func get(endPoint: String) {
+        log("Requesting data from - \(endPoint)")
+
         guard let request = getRequest(for: endPoint) else { return }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -36,21 +38,44 @@ class ApiViewController: UIViewController {
             guard let response = response as? HTTPURLResponse else { self.log("An http response was not received from \(endPoint)"); return }
             
             if self.validate(httpStatus: response.statusCode) {
-                do { _ = try JSONSerialization.jsonObject(with: data, options: []) }
-                catch { self.log("Cannot convert json data to object: \(error)")}
-                
-                self.log(String(data: data, encoding: .utf8) ?? "Cannot convert json data to string")
+
+                var list: [JSONDictionary]? = nil
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    if let array = json as? JSONArray {
+                        list = array.compactMap { $0 as? JSONDictionary }
+                        if array.count != list!.count {
+                            self.log("Warning: the JSONArray contained \(array.count) entries; only \(list!.count) were JSONDictionaries")
+                        }
+                    }
+                    else if let entry = json as? JSONDictionary {
+                        list = [JSONDictionary]()
+                        list!.append(entry)
+                    }
+                }
+                catch {}
+
+                if let records = list {
+                    self.log("Received data is JSON")
+                    records.forEach() { dictionary in self.log("\(dictionary)")}
+                }
+                else {
+                    self.log("Received data is not JSON")
+                    self.log(String(data: data, encoding: .utf8) ?? "Cannot convert data to utf8 string")
+                }
             }
         }
         task.resume()
     }
     
     func delete(endPoint: String) {
+        log("Deleting data at - \(endPoint)")
+
         guard var request = getRequest(for: endPoint) else { return }
         request.httpMethod = "DELETE"
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard error == nil else { self.log("An error occurred posting data to \(endPoint): \(error!)"); return }
+            guard error == nil else { self.log("An error occurred deleting data at \(endPoint): \(error!)"); return }
             guard let response = response as? HTTPURLResponse else { self.log("An http response was not received from \(endPoint)"); return }
             
             if self.validate(httpStatus: response.statusCode) {
@@ -81,6 +106,8 @@ class ApiViewController: UIViewController {
     }
 
     func post(jsonData: Data, to endPoint: String, with token: String? = nil) {
+        log("Posting data to - \(endPoint)")
+
         guard var request = getRequest(for: endPoint) else { return }
         request.httpMethod = "POST"
 

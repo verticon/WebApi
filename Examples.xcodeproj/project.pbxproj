@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1212636248987B300104DCD /* TwitterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1212635248987B300104DCD /* TwitterViewController.swift */; };
 		E14693DB2150356700BB3811 /* GitHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DA2150356700BB3811 /* GitHubViewController.swift */; };
 		E14693DD2151558A00BB3811 /* HttpStatusCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */; };
 		E14693DF21517D5800BB3811 /* ApiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14693DE21517D5800BB3811 /* ApiViewController.swift */; };
@@ -15,6 +16,7 @@
 		E1828A36214F23F900E14888 /* PostDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1828A35214F23F900E14888 /* PostDataViewController.swift */; };
 		E18324332153051700803A35 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18324312153051700803A35 /* ImageViewCell.swift */; };
 		E18324342153051700803A35 /* ImageViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E18324322153051700803A35 /* ImageViewCell.xib */; };
+		E1AD99182481987100661305 /* ExtensionsAndAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1AD99172481987100661305 /* ExtensionsAndAliases.swift */; };
 		E1B78D66247D4D7000FFA16B /* OAuthSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1B78D65247D4D7000FFA16B /* OAuthSwift.framework */; };
 		E1B78D67247D4D7000FFA16B /* OAuthSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E1B78D65247D4D7000FFA16B /* OAuthSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E1E1073C214EA36B00EA081D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E1073B214EA36B00EA081D /* AppDelegate.swift */; };
@@ -39,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E1212635248987B300104DCD /* TwitterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterViewController.swift; sourceTree = "<group>"; };
 		E14693DA2150356700BB3811 /* GitHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubViewController.swift; sourceTree = "<group>"; };
 		E14693DC2151558A00BB3811 /* HttpStatusCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpStatusCodes.swift; sourceTree = "<group>"; };
 		E14693DE21517D5800BB3811 /* ApiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		E1828A35214F23F900E14888 /* PostDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataViewController.swift; sourceTree = "<group>"; };
 		E18324312153051700803A35 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 		E18324322153051700803A35 /* ImageViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewCell.xib; sourceTree = "<group>"; };
+		E1AD99172481987100661305 /* ExtensionsAndAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsAndAliases.swift; sourceTree = "<group>"; };
 		E1B78D65247D4D7000FFA16B /* OAuthSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OAuthSwift.framework; path = ../OAuthSwift/Carthage/Build/iOS/OAuthSwift.framework; sourceTree = "<group>"; };
 		E1E10738214EA36B00EA081D /* Examples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Examples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1E1073B214EA36B00EA081D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 				E14693DE21517D5800BB3811 /* ApiViewController.swift */,
 				E1E1073B214EA36B00EA081D /* AppDelegate.swift */,
 				E1E10742214EA36C00EA081D /* Assets.xcassets */,
+				E1AD99172481987100661305 /* ExtensionsAndAliases.swift */,
 				E1E1073D214EA36B00EA081D /* GeneralViewController.swift */,
 				E14693DA2150356700BB3811 /* GitHubViewController.swift */,
 				E14693E021518CDB00BB3811 /* GoogleViewController.swift */,
@@ -111,6 +116,7 @@
 				E1E1073F214EA36B00EA081D /* Main.storyboard */,
 				E181FAD3247EEFA100DEF228 /* OAuthViewController.swift */,
 				E1828A35214F23F900E14888 /* PostDataViewController.swift */,
+				E1212635248987B300104DCD /* TwitterViewController.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -191,7 +197,9 @@
 			files = (
 				E1E1073E214EA36B00EA081D /* GeneralViewController.swift in Sources */,
 				E181FAD4247EEFA100DEF228 /* OAuthViewController.swift in Sources */,
+				E1212636248987B300104DCD /* TwitterViewController.swift in Sources */,
 				E14693DF21517D5800BB3811 /* ApiViewController.swift in Sources */,
+				E1AD99182481987100661305 /* ExtensionsAndAliases.swift in Sources */,
 				E18324332153051700803A35 /* ImageViewCell.swift in Sources */,
 				E1E1073C214EA36B00EA081D /* AppDelegate.swift in Sources */,
 				E14693DD2151558A00BB3811 /* HttpStatusCodes.swift in Sources */,

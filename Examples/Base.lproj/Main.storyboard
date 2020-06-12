@@ -7,6 +7,40 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Twitter-->
+        <scene sceneID="z2l-wO-9y4">
+            <objects>
+                <viewController id="NYp-4v-Lte" customClass="TwitterViewController" customModule="Examples" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LpI-w9-TrR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="16w-JC-g2n">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="V0a-fs-3P4" firstAttribute="bottom" secondItem="16w-JC-g2n" secondAttribute="bottom" id="QJE-DX-5Wr"/>
+                            <constraint firstItem="16w-JC-g2n" firstAttribute="leading" secondItem="V0a-fs-3P4" secondAttribute="leading" id="V7x-SN-FAd"/>
+                            <constraint firstItem="V0a-fs-3P4" firstAttribute="trailing" secondItem="16w-JC-g2n" secondAttribute="trailing" id="dK2-Ck-hn1"/>
+                            <constraint firstItem="16w-JC-g2n" firstAttribute="top" secondItem="V0a-fs-3P4" secondAttribute="top" id="rVN-UW-JwJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="V0a-fs-3P4"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Twitter" id="TeG-fr-ZFE"/>
+                    <connections>
+                        <outlet property="console" destination="16w-JC-g2n" id="4oe-gZ-lCX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mc2-YD-7pA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-346" y="1311"/>
+        </scene>
         <!--GitHub-->
         <scene sceneID="HYr-ii-Z3f">
             <objects>
@@ -196,6 +230,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="bv3-re-xLe"/>
                         <segue destination="ebZ-HX-zaz" kind="relationship" relationship="viewControllers" id="HsH-V6-QOf"/>
                         <segue destination="048-i7-ovK" kind="relationship" relationship="viewControllers" id="Ldg-kn-Mga"/>
+                        <segue destination="NYp-4v-Lte" kind="relationship" relationship="viewControllers" id="Qy8-sc-D9w"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DP2-My-YTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
