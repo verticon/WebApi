@@ -38,16 +38,14 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
         }
     }
 
-    private func authorize(callback: @escaping (Bool) -> ()) {
+    private func authorize(completion: @escaping (Bool) -> ()) {
 
         let parameters = OAuth2AuthorizationParameters(consumerKey: "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
             consumerSecret: "", authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
             accessTokenUrl: "https://accounts.google.com/o/oauth2/token", redirectUri: "com.rvaessen.WebApi:/oauth2redirect/google",
             responseType: "code", scope: "https://www.googleapis.com/auth/drive", state: "")
 
-        authorize(serviceName: "GoogleDrive", parameters: parameters, authorizationTestUrl: fileListUrl) { (status: Bool) in
-            callback(status)
-        }
+        authorize(serviceName: "GoogleDrive", parameters: parameters, authorizationTestUrl: fileListUrl, completion: completion)
     }
 
     // ******************************************************************************************************

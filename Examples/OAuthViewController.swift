@@ -42,6 +42,10 @@ class OAuthViewController: ApiViewController {
     //
     // **********************************************************************************************************************************
 
+    // https://oauthswift.herokuapp.com/callback/some-name will redirect to oauth-swift://oauth-callback/some-name
+    // see: https://oauthswift.herokuapp.com and https://github.com/dongri/oauthswift.herokuapp.com
+    func getRedirector(for serviceName: String) -> String { return "https://oauthswift.herokuapp.com/callback/\(serviceName)" }
+
     private func validate(authorization: OAuthSwift, for serviceName: String, using testUrl: String, completion: @escaping (Result<OAuthSwiftResponse, OAuthSwiftError>) -> ()) {
 
         self.log("\(serviceName): Validating authorization using - \(testUrl)")
@@ -58,6 +62,80 @@ class OAuthViewController: ApiViewController {
     // **********************************************************************************************************************************}
     // OAuth1
     // **********************************************************************************************************************************
+
+    struct OAuth1AuthorizationParameters {
+        let consumerKey: String
+        let consumerSecret: String
+        let requestTokenUrl: String
+        let authorizeUrl: String
+        let accessTokenUrl: String
+        let redirectUri: String
+    }
+
+    func authorize(serviceName: String, parameters: OAuth1AuthorizationParameters, authorizationTestUrl: String?, completion: @escaping (Bool) -> ()) {
+
+        let authorization = OAuth1Swift(consumerKey: parameters.consumerKey, consumerSecret: parameters.consumerSecret,
+                                        requestTokenUrl: parameters.requestTokenUrl, authorizeUrl: parameters.authorizeUrl,
+                                        accessTokenUrl: parameters.accessTokenUrl)
+        authorization.authorizeURLHandler = SafariURLHandler.init(viewController: self, oauthSwift: authorization)
+
+        authorize(serviceName: serviceName, using: authorization, with: parameters.redirectUri, and: authorizationTestUrl, completion: completion)
+    }
+
+    private func authorize(serviceName: String, using authorization: OAuth1Swift, with redirectUri: String, and testUrl: String?, completion: @escaping (Bool) -> ()) {
+
+        func authorize() {
+            log("\(serviceName): Acquiring access token")
+
+            guard let callbackURL = URL(string: redirectUri) else {
+                 log("\(serviceName): Invalid redirect URI - \(redirectUri)");
+                 completion(false)
+                 return
+             }
+
+            _ = authorization.authorize(withCallbackURL: callbackURL) { result in
+               switch result {
+               case .success(let (credentials, _, _)):
+                   self.log("\(serviceName): Authorization succeeded")
+                   self.storeCredentials(for: serviceName, credentials)
+                   self.authorization = authorization
+                   completion(true)
+               case .failure(let error):
+                self.log("\(serviceName): Authorization failed - \(error.description)")
+               }
+            }
+        }
+
+        func authorize(with token: String) {
+            log("\(serviceName): Authorizing with stored access token")
+
+            authorization.client.credential.oauthToken = token
+            if let tokenSecret = retrieveTokenSecret(for: serviceName) { authorization.client.credential.oauthTokenSecret = tokenSecret }
+
+            guard let testUrl = testUrl else {
+                self.authorization = authorization
+                completion(true)
+                return
+            }
+
+            validate(authorization: authorization, for: serviceName, using: testUrl) { result in
+                switch result {
+
+                case .success:
+                    self.authorization = authorization
+                    completion(true)
+
+                case .failure:
+                    authorize()
+                }
+            }
+        }
+
+        log("\(serviceName): Authorizing access with Oauth1")
+
+        if let token = retrieveToken(for: serviceName) { authorize(with: token) }
+        else { authorize() }
+    }
 
     // **********************************************************************************************************************************}
     // OAuth2
@@ -76,8 +154,6 @@ class OAuthViewController: ApiViewController {
 
     func authorize(serviceName: String, parameters: OAuth2AuthorizationParameters, authorizationTestUrl: String?, completion: @escaping (Bool) -> ()) {
 
-        log("\(serviceName): Authorizing access with Oauth2")
-
         let authorization = OAuth2Swift(consumerKey: parameters.consumerKey, consumerSecret: parameters.consumerSecret,
                                         authorizeUrl: parameters.authorizeUrl, accessTokenUrl: parameters.accessTokenUrl,
                                         responseType: parameters.responseType)
@@ -91,6 +167,8 @@ class OAuthViewController: ApiViewController {
     private func authorize(serviceName: String, using authorization: OAuth2Swift, with redirectUri: String, and testUrl: String?, scope: String, state: String, completion: @escaping (Bool) -> ()) {
 
         func authorize() {
+            log("\(serviceName): Acquiring access token")
+
             guard let callbackURL = URL(string: redirectUri) else {
                 log("\(serviceName): Invalid redirect URI - \(redirectUri)");
                 completion(false)
@@ -114,7 +192,7 @@ class OAuthViewController: ApiViewController {
         }
 
         func authorize(with token: String) {
-            log("\(serviceName): Authorizing with access token")
+            log("\(serviceName): Authorizing with stored access token")
 
             authorization.client.credential.oauthToken = token
             if let tokenSecret = retrieveTokenSecret(for: serviceName) { authorization.client.credential.oauthTokenSecret = tokenSecret }
@@ -151,6 +229,8 @@ class OAuthViewController: ApiViewController {
                 }
             }
         }
+
+        log("\(serviceName): Authorizing access with Oauth2")
 
         if let token = retrieveToken(for: serviceName) { authorize(with: token) }
         else { authorize() }
