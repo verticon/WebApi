@@ -14,6 +14,7 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
 
     @IBOutlet weak var uploadButton: UIButton!
 
+    private let serviceName = "GoogleDrive"
     private let fileListUrl = "https://www.googleapis.com/drive/v2/files"
 
     private var images = [UIImage]()
@@ -40,12 +41,14 @@ class GoogleViewController: OAuthViewController, UIImagePickerControllerDelegate
 
     private func authorize(completion: @escaping (Bool) -> ()) {
 
+        // When setting up an iOS app in the Google developer's console, the app's  bundle id must be entered.
+        // Apparently Google requires that the redirect URL's schem match the bundle ID. Huh?
         let parameters = OAuth2AuthorizationParameters(consumerKey: "555550332418-41183s354gf2faro1qng7nkm7pl4pvqt.apps.googleusercontent.com",
             consumerSecret: "", authorizeUrl: "https://accounts.google.com/o/oauth2/auth",
             accessTokenUrl: "https://accounts.google.com/o/oauth2/token", redirectUri: "com.rvaessen.WebApi:/oauth2redirect/google",
             responseType: "code", scope: "https://www.googleapis.com/auth/drive", state: "")
-
-        authorize(serviceName: "GoogleDrive", parameters: parameters, authorizationTestUrl: fileListUrl, completion: completion)
+ 
+        authorize(serviceName: serviceName, parameters: parameters, authorizationTestUrl: fileListUrl, completion: completion)
     }
 
     // ******************************************************************************************************

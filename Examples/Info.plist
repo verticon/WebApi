@@ -36,14 +36,6 @@
 				<string>com.rvaessen.webapi</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.rvaessen.webapi</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>github</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>

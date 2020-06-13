@@ -14,6 +14,7 @@ class GitHubViewController: OAuthViewController {
     @IBOutlet weak var repoName: UITextField!
     @IBOutlet weak var createButton: UIButton!
 
+    private let serviceName = "GitHub"
     private let endPoint = "https://api.github.com/user/repos"
 
     override func viewDidLoad() {
@@ -29,10 +30,10 @@ class GitHubViewController: OAuthViewController {
 
         let parameters = OAuth2AuthorizationParameters(consumerKey: "7a68e2f2670f13dae4c4",
             consumerSecret: "822e869d88e2c801ae59bd04e4262cdfe453414e", authorizeUrl: "http://github.com/login/oauth/authorize",
-            accessTokenUrl: "https://github.com/login/oauth/access_token", redirectUri: "github://com.rvaessen.webapi:/oauth2Callback",
+            accessTokenUrl: "https://github.com/login/oauth/access_token", redirectUri: "oauth-swift://oauth-callback/\(serviceName.lowercased())",
             responseType: "code", scope: "repo", state: "")
 
-        authorize(serviceName: "GitHub", parameters: parameters, authorizationTestUrl: "https://api.github.com/user") { (succeeded: Bool) in
+        authorize(serviceName: serviceName, parameters: parameters, authorizationTestUrl: "https://api.github.com/user") { (succeeded: Bool) in
             if succeeded { self.queryRepos() }
         }
     }
